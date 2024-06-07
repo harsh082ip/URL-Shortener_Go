@@ -3,6 +3,7 @@ package authcontrollers
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/harsh082ip/URL-Shortener_Go/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func Login(c *gin.Context) {
@@ -76,7 +78,7 @@ func Login(c *gin.Context) {
 	sessionInfo.Email = jsonData.Email
 
 	// ----------------- SET to REDIS ----------------------------
-	key := "session:" + sessionInfo.SessionID
+	key := "session:" + sessionInfo.Email
 	jsonSession, err := json.Marshal(sessionInfo)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -85,6 +87,9 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+
+	// first delete if older session exists
+	rdb.Del(ctx, key)
 	_, err = rdb.Set(ctx, key, jsonSession, consts.SessionTTL).Result()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -94,8 +99,63 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	collName = "SessionInfo"
+	coll = db.OpenCollection(db.DBinstance(), collName)
+	emailFilter := bson.M{"email": sessionInfo.Email}
+
+	// Check if a document with the email already exists
+	count, err := coll.CountDocuments(ctx, emailFilter)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "error in checking existing session",
+			"error":  err.Error(),
+		})
+		return
+	}
+	// log.Println("here1...")
+
+	if count == 0 {
+		sessionInfo.CreatedAt = time.Now()
+		sessionInfo.UpdatedAt = sessionInfo.CreatedAt
+		// If no document with the email exists, insert a new document
+		// log.Println("here2...")
+		_, err := coll.InsertOne(ctx, sessionInfo)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": "error in inserting new session",
+				"error":  err.Error(),
+			})
+			rdb.Del(ctx, key)
+			return
+		}
+	} else {
+		// update the time
+		// sessionInfo.UpdatedAt = time.Now()
+		// log.Println("here3...")
+		// If a document with the email exists, update the existing document
+		update := bson.M{"$set": bson.M{"sessionid": sessionInfo.SessionID, "updatedat": time.Now()}}
+		// log.Println("here3...")
+		opts := options.Update().SetUpsert(false) // SetUpsert(false) for update only
+		// log.Println("here3...")
+		res, err := coll.UpdateOne(ctx, emailFilter, update, opts)
+		// log.Println("here3...")
+		log.Println(res.MatchedCount)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": "error in updating existing session",
+				"error":  err.Error(),
+			})
+			rdb.Del(ctx, key)
+			log.Println("here4....")
+			return
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"status":      "User SignUp Successful",
+		"status":      "User login Successful",
 		"sessionInfo": sessionInfo,
+		"count":       count,
+		// "UpsertedCount": res.UpsertedCount,
+		// "ModifiedCount": res.ModifiedCount,
 	})
 }

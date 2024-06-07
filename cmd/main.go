@@ -13,6 +13,7 @@ func main() {
 
 	router := gin.Default()
 	routes.AuthRoutes(router)
+	routes.UrlRoutes(router)
 
 	if err := http.ListenAndServe(consts.WEBPORT, router); err != nil {
 		log.Fatal("Error Starting the server ", err.Error())
