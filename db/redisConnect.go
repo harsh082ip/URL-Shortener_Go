@@ -1,6 +1,6 @@
 package db
 
-import "github.com/go-redis/redis"
+import "github.com/redis/go-redis/v9"
 
 func RedisConnect() *redis.Client {
 	url := "redis://localhost:6379"
