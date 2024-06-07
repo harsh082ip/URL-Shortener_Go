@@ -31,17 +31,24 @@ type LoginUser struct {
 	Password string `json:"password" binding:"required,min=6"`
 }
 
-type visithistory struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	Timestamp time.Time          `bson:"timestamp"`
-}
+// type visithistory struct {
+// 	// ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+// 	Timestamp []time.Time `bson:"timestamp"`
+// }
 
 type UrlInfo struct {
-	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	ShortID      string             `bson:"shortid"`
-	RedirectURL  string             `bson:"redirecturl" binding:"required"`
-	VisitHistory visithistory       `bson:"visithistory,omitempty"`
-	CreatedBy    string             `bson:"createdby" binding:"required"`
-	CreatedAt    time.Time          `bson:"createdAt,omitempty"`
-	UpdatedAt    time.Time          `bson:"updatedAt,omitempty"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	ShortID     string             `bson:"shortid"`
+	RedirectURL string             `bson:"redirecturl" binding:"required"`
+	// VisitHistory visithistory       `bson:"visithistory,omitempty"`
+	CreatedBy string    `bson:"createdby" binding:"required"`
+	CreatedAt time.Time `bson:"createdAt,omitempty"`
+	UpdatedAt time.Time `bson:"updatedAt,omitempty"`
+	// VisitCount   int                `bson:"visitcount"`
+}
+
+type VisitsInfoCache struct {
+	VisitCount int         `json:"visitcount"`
+	Timestamps []time.Time `json:"timestamps"`
+	SessionID  string      `json:"sessionid"`
 }

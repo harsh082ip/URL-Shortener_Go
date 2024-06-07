@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -29,6 +30,25 @@ func Shorten(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
 
+	// Assuming url.RedirectURL is a string
+
+	// Check if the URL starts with "https://"
+	if strings.HasPrefix(url.RedirectURL, "https://") {
+		// URL starts with "https://", it's already correct
+	} else if strings.HasPrefix(url.RedirectURL, "http://") {
+		// URL starts with "http://", it's already correct
+	} else {
+		// URL doesn't start with "https://" or "http://", so prepend "http://"
+		url.RedirectURL = "http://" + url.RedirectURL
+	}
+	isUrlInvalid := helpers.IsValidURL(url.RedirectURL)
+	if !isUrlInvalid {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "URL does not respond",
+			"error":  "Entered Url doesn't work, pls enter correct url",
+		})
+		return
+	}
 	userExists, err := helpers.CheckIfDocExists("email", url.CreatedBy, "Users", ctx)
 	if err != nil {
 		log.Println("Error checking if user exists:", err)

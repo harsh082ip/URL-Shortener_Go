@@ -8,4 +8,5 @@ import (
 
 func UrlRoutes(incomingRoutes *gin.Engine) {
 	incomingRoutes.POST("/url/shorten", middleware.AuthMiddleware(), urlcontrollers.Shorten)
+	incomingRoutes.GET("/:shortid", urlcontrollers.RedirectUrlS)
 }
