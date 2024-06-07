@@ -7,6 +7,7 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 - [Usage](#usage)
 - [Features](#features)
 - [API Endpoints](#api-endpoints)
+- [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -91,6 +92,12 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 - **GET /:shortid**
     - Redirects to the original URL corresponding to the given short ID.
 
+## Technologies Used
+
+- **Gin**: A web framework for Go. Used for building the HTTP server and defining routes.
+- **MongoDB**: A NoSQL database used for storing user information, URLs, and session data.
+- **Redis**: An in-memory data store used for caching and session management.
+
 ## Contributing
 
 1. **Fork the repository**.
@@ -100,7 +107,6 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 5. **Create a Pull Request**.
 
 
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
@@ -108,4 +114,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contact
 
 For questions or feedback, please contact [yourname](mailto:harshhvstech1975@gmail.com).
-
