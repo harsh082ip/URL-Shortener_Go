@@ -16,10 +16,12 @@ func main() {
 	// The LoadHTMLGlob function tells Gin where to find your HTML templates.
 	router.LoadHTMLGlob("templates/*")
 
-	// Define routes
+	// Defined routes
 	routes.AuthRoutes(router)
 	routes.UrlRoutes(router)
 
+	// for un-defined routes
+	routes.UndefinedRoutes(router)
 	// Serve static files
 	// router.Static("/tempelates", "./tempelates")
 
