@@ -16,7 +16,7 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/yourusername/URL-Shortener_Go.git
+    git clone https://github.com/harsh082ip/URL-Shortener_Go.git
     cd URL-Shortener_Go
     ```
 
