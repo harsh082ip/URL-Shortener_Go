@@ -30,7 +30,8 @@ func SignUp(c *gin.Context) {
 	coll := db.OpenCollection(db.DBinstance(), collName)
 
 	emailFilter := bson.M{"email": jsonData.Email}
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*15)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
+	defer cancel()
 	count, err := coll.CountDocuments(ctx, emailFilter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

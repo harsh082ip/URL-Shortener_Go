@@ -22,7 +22,8 @@ func DBinstance() *mongo.Client {
 	MONGODB_URI := os.Getenv("MONGODB_URI")
 	// log.Fatal(MONGODB_URI)
 
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*15)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
+	defer cancel()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(MONGODB_URI))
 	if err != nil {

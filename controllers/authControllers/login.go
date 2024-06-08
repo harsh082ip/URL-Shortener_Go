@@ -36,7 +36,8 @@ func Login(c *gin.Context) {
 	collName := "Users"
 	coll := db.OpenCollection(db.DBinstance(), collName)
 	rdb := db.RedisConnect()
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*15)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
+	defer cancel()
 
 	err := coll.FindOne(ctx, bson.M{"email": jsonData.Email}).Decode(&jsonData)
 	if err != nil {

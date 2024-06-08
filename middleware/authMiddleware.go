@@ -23,7 +23,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		ctx, _ := context.WithTimeout(context.Background(), time.Second*120)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
+		defer cancel()
 
 		// extract email of the sessionId
 		collName := "SessionInfo"
