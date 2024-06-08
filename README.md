@@ -89,6 +89,17 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
         ```
     - Response: The shortened URL information.
 
+- **POST /url/customshorten?sessionID=YOUR_SESSION_ID**
+    - Request body:
+        ```json
+        {
+            "shortid": "custom short ID",
+            "redirecturl": "URL to be shortened",
+            "createdby": "user's email"
+        }
+        ```
+    - Response: The shortened URL information.
+
 - **GET /:shortid**
     - Redirects to the original URL corresponding to the given short ID.
 
@@ -105,7 +116,6 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 3. **Commit your changes**.
 4. **Push to the branch**.
 5. **Create a Pull Request**.
-
 
 ## License
 
