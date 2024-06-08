@@ -79,7 +79,7 @@ Welcome to the URL Shortener service built with Go and the Gin web framework! Th
 
 ### URL Routes
 
-- **POST /url/shorten**
+- **POST /url/shorten?sessionID=YOUR_SESSION_ID**
     - Request body:
         ```json
         {
