@@ -75,7 +75,7 @@ func Shorten(c *gin.Context) {
 	}
 
 	url.ShortID = shortID
-	url.CreatedAt = time.Now()
+	// url.CreatedAt = time.Now()
 	url.ID = primitive.NewObjectID()
 
 	collName := "UrlInfo"
@@ -93,7 +93,7 @@ func Shorten(c *gin.Context) {
 	// }
 
 	// first we will check if the same user has previously created the shorturl of the same
-	filter := bson.M{"createdby": url.CreatedBy, "redirecturl": url.RedirectURL}
+	filter := bson.M{"createdby": url.CreatedBy, "redirecturl": url.RedirectURL, "requesttype": "non_custom"}
 	count, err := coll.CountDocuments(ctx, filter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -104,6 +104,7 @@ func Shorten(c *gin.Context) {
 	}
 
 	if count == 0 {
+		url.RequestType = "non_custom"
 		url.CreatedAt = time.Now()
 		url.UpdatedAt = url.CreatedAt
 		_, err = coll.InsertOne(ctx, url)

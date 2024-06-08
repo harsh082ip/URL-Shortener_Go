@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"context"
+	"log"
 
 	"github.com/harsh082ip/URL-Shortener_Go/db"
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,7 +16,7 @@ func CheckIfDocExists(key, val, collName string, ctx context.Context) (bool, err
 	if err != nil {
 		return false, err
 	}
-
+	log.Println(res)
 	if res > 0 {
 		return true, nil
 	}

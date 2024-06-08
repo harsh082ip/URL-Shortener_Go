@@ -45,6 +45,7 @@ type UrlInfo struct {
 	CreatedAt time.Time `bson:"createdAt,omitempty"`
 	UpdatedAt time.Time `bson:"updatedAt,omitempty"`
 	// VisitCount   int                `bson:"visitcount"`
+	RequestType string `bson:"requesttype"`
 }
 
 type VisitsInfoCache struct {
