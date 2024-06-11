@@ -1,10 +1,22 @@
 package db
 
-import "github.com/redis/go-redis/v9"
+import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
+)
 
 func RedisConnect() *redis.Client {
-	url := "redis://localhost:6379"
-	opts, err := redis.ParseURL(url)
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+
+	REDIS_URI := os.Getenv("REDIS_URI")
+
+	opts, err := redis.ParseURL(REDIS_URI)
 	if err != nil {
 		panic(err)
 	}

@@ -19,6 +19,7 @@ func main() {
 	// Defined routes
 	routes.AuthRoutes(router)
 	routes.UrlRoutes(router)
+	routes.MiscRoutes(router)
 
 	// for un-defined routes
 	routes.UndefinedRoutes(router)
