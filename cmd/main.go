@@ -28,7 +28,7 @@ func main() {
 
 	router.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
-			"msg": "Welcome to url shortener service :)",
+			"msg": "Welcome to url shortener service v2 :)",
 		})
 	})
 
