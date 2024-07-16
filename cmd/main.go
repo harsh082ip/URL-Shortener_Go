@@ -14,7 +14,7 @@ func main() {
 
 	// Load HTML templates from the templates directory
 	// The LoadHTMLGlob function tells Gin where to find your HTML templates.
-	router.LoadHTMLGlob("templates/*")
+	// router.LoadHTMLGlob("templates/*")
 
 	// Defined routes
 	routes.AuthRoutes(router)
